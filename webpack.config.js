@@ -25,6 +25,7 @@ module.exports = async (env, options) => {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
       vendor: ["react", "react-dom", "core-js"],
       taskpane: ["./src/taskpane/index.jsx", "./src/taskpane/taskpane.html"],
+      // executeFunctions: ["./src/executeFunctions/executeFunctions.html"],
     },
     output: {
       clean: true,
@@ -95,6 +96,10 @@ module.exports = async (env, options) => {
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
         chunks: ["taskpane", "vendor", "polyfill"],
+      }),
+      new HtmlWebpackPlugin({
+        filename: "executeFunctions.html",
+        template: "./src/executeFunctions/executeFunctions.html",
       }),
       new webpack.ProvidePlugin({
         Promise: ["es6-promise", "Promise"],

@@ -1,6 +1,6 @@
 /* global Word Excel console Office */
 
-const insertText = async (text) => {
+export const insertText = async (text) => {
   const tag = `{{${text}}}`;
 
   if (Office.context.host === Office.HostType.Excel) {
@@ -19,7 +19,6 @@ const insertText = async (text) => {
   }
 
   // Write text to Workbook.
-
   if (Office.context.host === Office.HostType.Word) {
     // Write text to the document.
     try {
@@ -38,4 +37,17 @@ const insertText = async (text) => {
   }
 };
 
-export default insertText;
+export const insertFunds = async (funds) => {
+  try {
+    await Excel.run(async context => {
+      let currentSheet = context.workbook.worksheets.getActiveWorksheet();
+      currentSheet.load("name")
+
+      await context.sync().then(() => {
+        console.log(currentSheet.name);
+      })
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}

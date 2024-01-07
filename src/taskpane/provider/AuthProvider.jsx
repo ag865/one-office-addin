@@ -7,13 +7,13 @@ import { storage } from "../lib/storage";
 
 const initialAuthContextValues = {
   user: null,
-  tenant: null,
+  userToken: null,
+  baseUrl: null,
   loadingUser: false,
   permissions: [],
   setUser: () => {},
   logout: () => {},
   refreshInBackground: () => {},
-  setTenant: () => {},
   refreshUser: () => {},
   storeToken: () => {},
 };
@@ -21,7 +21,9 @@ const initialAuthContextValues = {
 export const AuthContext = createContext(initialAuthContextValues);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(storage.getUser());
+  const [user, setUser] = useState(null);
+  const [userToken, setUserToken] = useState(null);
+  const [baseUrl, setBaseUrl] = useState(null);
   const [permissions, setPermissions] = useState([]);
   const [loadingUser, setLoadingUser] = useState(false);
 
@@ -91,6 +93,9 @@ export const AuthProvider = ({ children }) => {
     const token = await storage.getToken();
     const url = await storage.getUrl();
 
+    setUserToken(token);
+    setBaseUrl(url);
+
     try {
       if (token && url) {
         const response = await getTenantByToken({ token, url });
@@ -137,6 +142,8 @@ export const AuthProvider = ({ children }) => {
         refreshInBackground,
         refreshUser,
         storeToken,
+        userToken,
+        baseUrl,
       }}
     >
       {children}

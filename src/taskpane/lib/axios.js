@@ -1,7 +1,7 @@
 import Axios from "axios";
-// import {
-//   storage
-// } from "./storage";
+import {
+  storage
+} from "./storage";
 
 function authRequestInterceptor(config) {
   // const token = storage.getToken();
@@ -23,7 +23,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      // storage.clearToken();
+      storage.clearToken();
     }
 
     const message = error.response?.data?.message || error.message;

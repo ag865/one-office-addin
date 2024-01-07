@@ -3,9 +3,6 @@ export const TOKEN_KEY = "davigold_token";
 export const URL_KEY = "davigold_url";
 
 /* global OfficeRuntime */
-
-// OfficeRuntime.storage.
-
 export const storage = {
   getToken: async () => {
     const token = await OfficeRuntime.storage.getItem(TOKEN_KEY);

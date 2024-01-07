@@ -4,7 +4,9 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useAuth } from "../provider/AuthProvider";
 import { PlusIcon } from "../icons/PlusIcon";
 import { MinusIcon } from "../icons/MinusIcon";
-import insertText from "../office-document";
+import { insertText, insertFunds } from "../office-document";
+import { Button } from "../components/Button";
+import { getFunds } from "../api/funds";
 
 const LabelRow = ({ label }) => {
   const onLabelClick = useCallback(() => {
@@ -97,7 +99,7 @@ const ObjectListing = () => {
   }, [labels]);
 
   return (
-    <div className="p-2 flex flex-col space-y-2">
+    <div className="flex flex-col space-y-2">
       <h1 className="font-bold text-xl">All Objects</h1>
       {Object.keys(tableLabels).map((key) => (
         <ObjectRow key={key} data={tableLabels[key]} label={key} />
@@ -106,9 +108,32 @@ const ObjectListing = () => {
   );
 };
 
+const ImportData = () => {
+  const { baseUrl, userToken } = useAuth();
+
+  const onImportDataPress = useCallback(async () => {
+    try {
+      const response = await getFunds({ url: baseUrl, token: userToken });
+
+      console.log(response.data);
+    } catch (e) {
+      console.error("Error Fetching Data");
+    }
+  }, [baseUrl, userToken]);
+
+  return (
+    <div className="flex-1 flex items-center">
+      <Button size="sm" onClick={onImportDataPress}>
+        Import Data
+      </Button>
+    </div>
+  );
+};
+
 const Home = () => {
   return (
-    <div>
+    <div className="flex flex-col p-2 space-y-3">
+      <ImportData />
       <ObjectListing />
     </div>
   );
